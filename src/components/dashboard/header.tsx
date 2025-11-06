@@ -78,11 +78,11 @@ export function AppHeader() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-primary focus:text-primary-foreground">
               <Network className="mr-2 h-4 w-4" />
               <span>{currentNetwork}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDisconnect}>
+            <DropdownMenuItem onClick={handleDisconnect} className="focus:bg-primary focus:text-primary-foreground">
               <LogOut className="mr-2 h-4 w-4" />
               <span>Disconnect</span>
             </DropdownMenuItem>
