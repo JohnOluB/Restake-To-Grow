@@ -14,3 +14,12 @@ export interface GrowthProposal {
   funded: number;
   status: 'Funding' | 'Completed' | 'Expired';
 }
+
+export interface Activity {
+  id: string;
+  type: 'Deposit' | 'Withdraw' | 'Fund' | 'Claim';
+  description: string;
+  value: string;
+  timestamp: string;
+  txHash: string;
+}

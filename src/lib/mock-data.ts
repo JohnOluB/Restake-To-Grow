@@ -1,5 +1,5 @@
 import { Coins, DollarSign, HandCoins, TrendingUp } from "lucide-react";
-import type { GrowthProposal, VaultStat } from "./types";
+import type { Activity, GrowthProposal, VaultStat } from "./types";
 
 export const mockVaultStats: VaultStat[] = [
   {
@@ -58,3 +58,38 @@ export const mockGrowthProposals: GrowthProposal[] = [
     status: 'Funding',
   },
 ];
+
+export const mockActivities: Activity[] = [
+    {
+      id: "act-1",
+      type: "Deposit",
+      description: "Deposited to Main Vault",
+      value: "+10.5 ETH",
+      timestamp: "2 minutes ago",
+      txHash: "0x123abcde...",
+    },
+    {
+      id: "act-2",
+      type: "Fund",
+      description: 'Funded "New Yield Strategy"',
+      value: "+500 ASSET",
+      timestamp: "15 minutes ago",
+      txHash: "0x456fghij...",
+    },
+    {
+      id: "act-3",
+      type: "Withdraw",
+      description: "Withdrew from Main Vault",
+      value: "-2.0 ETH",
+      timestamp: "1 hour ago",
+      txHash: "0x789klmno...",
+    },
+    {
+      id: "act-4",
+      type: "Claim",
+      description: "Claimed Yield",
+      value: "+125.3 ASSET",
+      timestamp: "3 hours ago",
+      txHash: "0xabcpqrst...",
+    },
+  ];
