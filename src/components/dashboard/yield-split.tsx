@@ -62,9 +62,6 @@ export function YieldSplit() {
               nameKey="name"
               innerRadius={60}
               strokeWidth={5}
-              label={({ name, percent }) => `${name} ${Math.round(percent * 100)}%`}
-              labelLine={false}
-              className="[&_.recharts-pie-label-text]:fill-primary-foreground [&_.recharts-pie-label-text]:text-sm"
             />
             <ChartLegend
               content={<ChartLegendContent nameKey="name" />}
