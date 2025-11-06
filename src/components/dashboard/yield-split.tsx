@@ -41,7 +41,7 @@ export function YieldSplit() {
   return (
     <Card className="border-border/50 bg-card/60 backdrop-blur-sm">
       <CardHeader>
-        <CardTitle>Yield Split</CardTitle>
+        <CardTitle>GrowthPool</CardTitle>
         <CardDescription>
           Yield is split 70/30 between the Treasury and the GrowthPool.
         </CardDescription>
@@ -62,7 +62,7 @@ export function YieldSplit() {
               nameKey="name"
               innerRadius={60}
               strokeWidth={5}
-              label={({ percent, name }) => `${name} ${Math.round(percent * 100)}%`}
+              label={({ percent, name }) => name === 'GrowthPool' ? `GrowthPool ${Math.round(percent * 100)}%` : `${Math.round(percent * 100)}%`}
               labelLine={false}
               className="[&_.recharts-pie-label-text]:fill-primary-foreground [&_.recharts-pie-label-text]:text-sm"
             />
