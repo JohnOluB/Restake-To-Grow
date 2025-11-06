@@ -1,4 +1,5 @@
 Restake-to-Grow Vault
+
 “Don’t just stake — restake to grow.”
 Built for Octant v2 DeFi Hackathon
 
@@ -47,16 +48,18 @@ Built with:
 
 Getting Started
 1. Clone the repo
-git clone https://github.com/<JohnOluB>/restake-to-grow-vault.git
+git clone https://github.com/JohnOluB/restake-to-grow-vault.git
+
 cd restake-to-grow-vault
-2. Install dependencies
+
+3. Install dependencies
 npm install
-3. Run the frontend
+4. Run the frontend
 npm run dev
-4. Deploy smart contracts (Hardhat)
+5. Deploy smart contracts (Hardhat)
 npx hardhat compile
 npx hardhat run scripts/deploy.js --network sepolia
-5. Configure vault
+6. Configure vault
 Edit .env with your strategy addresses and treasury wallet.
 
 Link to the live project: https://restake-to-grow.vercel.app/
