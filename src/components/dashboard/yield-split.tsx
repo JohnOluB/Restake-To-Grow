@@ -28,11 +28,11 @@ const chartConfig = {
     label: "Split",
   },
   treasury: {
-    label: "Treasury (70%)",
+    label: "Treasury",
     color: "hsl(var(--chart-1))",
   },
   growthpool: {
-    label: "GrowthPool (30%)",
+    label: "GrowthPool",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
@@ -62,6 +62,9 @@ export function YieldSplit() {
               nameKey="name"
               innerRadius={60}
               strokeWidth={5}
+              label={({ percent, name }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              labelLine={false}
+              className="text-xs"
             />
             <ChartLegend
               content={<ChartLegendContent nameKey="name" />}
