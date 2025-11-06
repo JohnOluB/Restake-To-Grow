@@ -10,9 +10,9 @@ Instead of yield sitting idle in a treasury, this vault splits and routes stakin
 The Problem
 DAOs often stake large amounts of ETH or LSTs (like stETH, eETH, or rETH) to earn yield.
 However, that yield is usually auto-compounded into the treasury, with no direct link to ecosystem growth.
-•	💤 Idle yield compounds silently
-•	💰 Builders and public goods go underfunded
-•	🧭 There’s no automated treasury-to-ecosystem flow
+• Idle yield compounds silently
+• Builders and public goods go underfunded
+• There’s no automated treasury-to-ecosystem flow
 
 The Solution
 Restake-to-Grow Vault introduces programmable yield routing through Octant v2 vaults.
@@ -25,32 +25,18 @@ o	30% flows into a GrowthPool smart contract
 4.	DAO governance votes on how GrowthPool funds are used (grants, incentives, bounties, etc.)
 This creates a flywheel, staking yield continuously funds ecosystem growth, attracting more users and developers, and ultimately more deposits.
 
-Architecture
-High-level design:
-DAO Treasury
-     │
-     ▼
-Restake-to-Grow Vault (ERC-4626)
-     │
-     ├──> Yield Strategies (stETH / Aave / EigenLayer)
-     │
-     └──> GrowthPool (Governance-controlled)
-              ├── Grants
-              ├── Hackathon Rewards
-              ├── Developer Incentives
-              └── Public Goods Funding
 Built with:
 • Octant v2 Vault architecture
-•	ERC-4626 standard
-•	LST yield sources (stETH, eETH)
-•	Onchain governance (snapshot-compatible voting)
-•	Transparent analytics dashboard (React + Tailwind frontend)
+• ERC-4626 standard
+• LST yield sources (stETH, eETH)
+• Onchain governance (snapshot-compatible voting)
+• Transparent analytics dashboard (React + Tailwind frontend)
 
 Getting Started
 1. Clone the repo
 git clone https://github.com/JohnOluB/restake-to-grow-vault.git
 
-cd restake-to-grow-vault
+2. cd restake-to-grow-vault
 
 3. Install dependencies
 npm install
