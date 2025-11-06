@@ -2,6 +2,8 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { AppContextProvider } from '@/contexts/app-context';
 import { Toaster } from '@/components/ui/toaster';
+import { Web3Provider } from '@/providers/web3-provider';
+import '@rainbow-me/rainbowkit/styles.css';
 
 export const metadata: Metadata = {
   title: 'RestakeToGrow',
@@ -21,10 +23,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <AppContextProvider>
-          {children}
-          <Toaster />
-        </AppContextProvider>
+        <Web3Provider>
+          <AppContextProvider>
+            {children}
+            <Toaster />
+          </AppContextProvider>
+        </Web3Provider>
       </body>
     </html>
   );

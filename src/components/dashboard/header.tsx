@@ -1,24 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { Rocket, Wallet, ChevronDown, LogOut, Network, Loader2, Menu } from "lucide-react";
+import { Rocket, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAppContext } from "@/contexts/app-context";
 import { cn } from "@/lib/utils";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+
 
 const NavLink = ({ href, children, className }: { href: string; children: React.ReactNode, className?: string }) => {
   const pathname = usePathname();
@@ -38,66 +31,6 @@ const NavLink = ({ href, children, className }: { href: string; children: React.
 
 export function AppHeader() {
   const { isMock, setIsMock } = useAppContext();
-  const [isConnected, setIsConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const userAddress = "0x1234...AbCd";
-  const currentNetwork = "Ethereum";
-
-  const handleConnect = () => {
-    setIsConnecting(true);
-    setTimeout(() => {
-      setIsConnected(true);
-      setIsConnecting(false);
-    }, 1500);
-  };
-
-  const handleDisconnect = () => {
-    setIsConnected(false);
-  };
-
-  const WalletButton = () => {
-    if (isConnecting) {
-      return (
-        <Button disabled>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Connecting...
-        </Button>
-      );
-    }
-
-    if (isConnected) {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
-              <Wallet className="mr-2 h-4 w-4" />
-              <span>{userAddress}</span>
-              <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="focus:bg-primary focus:text-primary-foreground">
-              <Network className="mr-2 h-4 w-4" />
-              <span>{currentNetwork}</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleDisconnect} className="focus:bg-primary focus:text-primary-foreground">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Disconnect</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    }
-
-    return (
-      <Button onClick={handleConnect}>
-        <Wallet className="mr-2 h-4 w-4" />
-        Connect Wallet
-      </Button>
-    );
-  };
 
   const navLinks = (
     <>
@@ -131,7 +64,7 @@ export function AppHeader() {
             <Label htmlFor="dev-mode">Dev Mode</Label>
           </div>
           <div className="hidden md:block">
-            <WalletButton />
+            <ConnectButton />
           </div>
           <Sheet>
             <SheetTrigger asChild>
@@ -150,7 +83,7 @@ export function AppHeader() {
                   {navLinks}
                 </nav>
                 <div className="border-t pt-6 space-y-6">
-                  <WalletButton />
+                   <ConnectButton />
                   <div className="flex items-center justify-between">
                     <Label htmlFor="dev-mode-mobile">Dev Mode</Label>
                     <Switch
