@@ -26,7 +26,7 @@ const NavLink = ({ href, children, className }: { href: string; children: React.
 
   return (
     <Link href={href} className={cn(
-      "text-sm font-medium transition-colors hover:text-primary",
+      "text-sm font-medium transition-colors md:hover:text-primary",
       isActive ? "text-primary" : "text-muted-foreground",
       className
     )}>
