@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Flame, Wallet, ChevronDown, LogOut, Network, Loader2 } from "lucide-react";
+import { Rocket, Wallet, ChevronDown, LogOut, Network, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -83,7 +83,7 @@ export function AppHeader() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-7xl items-center justify-between">
         <div className="flex items-center gap-2">
-          <Flame className="h-6 w-6 text-primary" />
+          <Rocket className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold">RestakeToGrow</h1>
         </div>
         <div className="flex items-center gap-4">
