@@ -8,13 +8,16 @@ import { GrowthPool } from "@/components/dashboard/growth-pool";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { useAppContext } from "@/contexts/app-context";
 import { mockGrowthProposals, mockVaultStats, mockActivities } from "@/lib/mock-data";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   const { isMock } = useAppContext();
 
   // In a real app, you would fetch this data from a contract or API
   const vaultStats = isMock ? mockVaultStats : [];
-  const growthProposals = isMock ? mockGrowthProposals : [];
+  const growthProposals = isMock ? mockGrowthProposals.slice(0, 2) : [];
   const activities = isMock ? mockActivities : [];
 
   return (
@@ -30,7 +33,17 @@ export default function Home() {
             </div>
             <div className="lg:col-span-2 space-y-8">
               <YieldSplit />
-              <GrowthPool proposals={growthProposals} />
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-semibold">Featured Proposals</h3>
+                    <Button variant="ghost" asChild>
+                        <Link href="/proposals">
+                            View All <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                </div>
+                <GrowthPool proposals={growthProposals} />
+              </div>
             </div>
           </div>
         </div>

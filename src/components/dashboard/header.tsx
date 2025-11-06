@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Rocket, Wallet, ChevronDown, LogOut, Network, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +17,22 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useAppContext } from "@/contexts/app-context";
+import { cn } from "@/lib/utils";
+
+const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
+  return (
+    <Link href={href} className={cn(
+      "text-sm font-medium transition-colors hover:text-primary",
+      isActive ? "text-primary" : "text-muted-foreground"
+    )}>
+      {children}
+    </Link>
+  );
+};
+
 
 export function AppHeader() {
   const { isMock, setIsMock } = useAppContext();
@@ -82,9 +100,16 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-7xl items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Rocket className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-bold">RestakeToGrow</h1>
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-2">
+            <Rocket className="h-6 w-6 text-primary" />
+            <h1 className="text-xl font-bold">RestakeToGrow</h1>
+          </Link>
+          <nav className="hidden md:flex items-center gap-4">
+            <NavLink href="/">Dashboard</NavLink>
+            <NavLink href="/proposals">Proposals</NavLink>
+            <NavLink href="/docs">Docs</NavLink>
+          </nav>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center space-x-2">
