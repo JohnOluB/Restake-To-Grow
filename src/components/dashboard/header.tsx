@@ -69,7 +69,7 @@ export function AppHeader() {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
+            <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground">
               <Wallet className="mr-2 h-4 w-4" />
               <span>{userAddress}</span>
               <ChevronDown className="ml-2 h-4 w-4" />
