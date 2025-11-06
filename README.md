@@ -1,11 +1,11 @@
 Restake-to-Grow Vault
 
-“Don’t just stake — restake to grow.”
+“Don’t just stake, restake to grow.”
 Built for Octant v2 DeFi Hackathon
 
 Overview
-Restake-to-Grow Vault is a yield-donating DeFi vault built on Octant v2, designed to help DAOs and L2 treasuries channel their staking yield directly into ecosystem growth — automatically, transparently, and onchain.
-Instead of yield sitting idle in a treasury, this vault splits and routes staking returns between the DAO treasury and a GrowthPool, which can fund grants, hackathons, developer incentives, or public goods — all governed by DAO voting.
+Restake-to-Grow Vault is a yield-donating DeFi vault built on Octant v2, designed to help DAOs and L2 treasuries channel their staking yield directly into ecosystem growth automatically, transparently, and onchain.
+Instead of yield sitting idle in a treasury, this vault splits and routes staking returns between the DAO treasury and a GrowthPool, which can fund grants, hackathons, developer incentives, or public goods all governed by DAO voting.
 
 The Problem
 DAOs often stake large amounts of ETH or LSTs (like stETH, eETH, or rETH) to earn yield.
@@ -23,7 +23,7 @@ Here’s how it works:
 o	70% auto-compounds back to the treasury
 o	30% flows into a GrowthPool smart contract
 4.	DAO governance votes on how GrowthPool funds are used (grants, incentives, bounties, etc.)
-This creates a flywheel — staking yield continuously funds ecosystem growth, attracting more users and developers, and ultimately more deposits.
+This creates a flywheel, staking yield continuously funds ecosystem growth, attracting more users and developers, and ultimately more deposits.
 
 Architecture
 High-level design:
