@@ -109,19 +109,19 @@ export function AppHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between max-w-7xl">
-        <div className="flex items-center gap-6">
+      <div className="container flex h-16 items-center max-w-7xl">
+        <div className="flex items-center gap-6 md:flex-1">
           <Link href="/" className="flex items-center gap-2">
             <Rocket className="h-6 w-6 text-primary" />
             <h1 className="text-lg font-bold md:text-xl">RestakeToGrow</h1>
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex justify-center items-center gap-6">
           {navLinks}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-1 items-center justify-end gap-4">
           <div className="hidden items-center space-x-2 md:flex">
             <Switch
               id="dev-mode"
