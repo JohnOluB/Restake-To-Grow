@@ -135,7 +135,7 @@ export function AppHeader() {
           </div>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon" className="md:hidden hover:bg-transparent">
                 <Menu />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
