@@ -48,10 +48,7 @@ export default function DocsPage() {
       <AppHeader />
       <main className="flex-1 p-4 sm:p-6 md:p-8">
         <div className="max-w-4xl mx-auto grid gap-8">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Documentation</h2>
-            <p className="text-muted-foreground">Frequently Asked Questions</p>
-          </div>
+          <h2 className="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2>
           <FAQ />
         </div>
       </main>
