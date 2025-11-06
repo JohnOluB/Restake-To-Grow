@@ -41,7 +41,7 @@ export function YieldSplit() {
   return (
     <Card className="border-border/50 bg-card/60 backdrop-blur-sm">
       <CardHeader>
-        <CardTitle>GrowthPool</CardTitle>
+        <CardTitle>Yield Split</CardTitle>
         <CardDescription>
           Yield is split 70/30 between the Treasury and the GrowthPool.
         </CardDescription>
