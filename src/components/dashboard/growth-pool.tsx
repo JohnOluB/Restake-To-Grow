@@ -16,26 +16,40 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import type { GrowthProposal } from "@/lib/types";
 import { Skeleton } from "../ui/skeleton";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 
 const GlassCard = (props: React.ComponentProps<typeof Card>) => (
     <Card {...props} className="border-border/50 bg-card/60 backdrop-blur-sm" />
 );
 
+const FundSchema = z.object({
+  amount: z.coerce.number().positive({ message: "Amount must be greater than 0" }),
+});
+
 const ProposalItem = ({ title, description, goal, funded, status }: GrowthProposal) => {
   const { toast } = useToast();
-  const [fundAmount, setFundAmount] = useState("");
   const [isFunding, setIsFunding] = useState(false);
   const progress = (funded / goal) * 100;
 
-  const handleFund = () => {
+  const form = useForm<z.infer<typeof FundSchema>>({
+    resolver: zodResolver(FundSchema),
+    defaultValues: {
+      amount: undefined,
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof FundSchema>) => {
     setIsFunding(true);
     setTimeout(() => {
       setIsFunding(false);
       toast({
         title: "Proposal Funded",
-        description: `You successfully funded "${title}" with ${fundAmount} ASSET.`,
+        description: `You successfully funded "${title}" with ${values.amount} ASSET.`,
       });
-      setFundAmount("");
+      form.reset();
     }, 1500);
   };
   
@@ -60,18 +74,33 @@ const ProposalItem = ({ title, description, goal, funded, status }: GrowthPropos
         </div>
       </div>
       {!isCompleted && (
-        <div className="flex gap-2">
-            <Input 
-              placeholder="Amount to fund" 
-              value={fundAmount} 
-              onChange={e => setFundAmount(e.target.value)}
-              disabled={isFunding}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
+            <FormField
+              control={form.control}
+              name="amount"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormControl>
+                    <Input 
+                      placeholder="Amount to fund" 
+                      type="number"
+                      step="any"
+                      {...field}
+                      disabled={isFunding}
+                      onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <Button onClick={handleFund} disabled={!fundAmount || isFunding}>
+            <Button type="submit" disabled={isFunding || !form.formState.isValid}>
               {isFunding && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Fund
             </Button>
-        </div>
+          </form>
+        </Form>
       )}
       {isCompleted && (
          <div className="text-sm font-medium text-accent">Funding Completed</div>

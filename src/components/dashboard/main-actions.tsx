@@ -17,45 +17,97 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 
 const GlassCard = (props: React.ComponentProps<typeof Card>) => (
     <Card {...props} className="border-border/50 bg-card/60 backdrop-blur-sm" />
 );
 
+// Mock data
+const walletBalance = 1250.5;
+const depositedBalance = 5000;
+
+const DepositSchema = z.object({
+  depositAmount: z.coerce
+    .number()
+    .positive({ message: "Amount must be greater than 0" })
+    .max(walletBalance, { message: "Insufficient balance" }),
+});
+
+const WithdrawSchema = z.object({
+  withdrawAmount: z.coerce
+    .number()
+    .positive({ message: "Amount must be greater than 0" })
+    .max(depositedBalance, { message: "Amount exceeds deposited balance" }),
+});
+
+
 export function MainActions() {
   const { toast } = useToast();
-  const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [isApproving, setIsApproving] = useState(false);
   const [isDepositing, setIsDepositing] = useState(false);
   const [isWithdrawing, setIsWithdrawing] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
+  const [activeTab, setActiveTab] = useState("deposit");
+  
+  const depositForm = useForm<z.infer<typeof DepositSchema>>({
+    resolver: zodResolver(DepositSchema),
+    mode: "onChange",
+    defaultValues: {
+      depositAmount: undefined,
+    }
+  });
 
-  // Mock data
-  const walletBalance = 1250.5;
-  const depositedBalance = 5000;
+  const withdrawForm = useForm<z.infer<typeof WithdrawSchema>>({
+    resolver: zodResolver(WithdrawSchema),
+    mode: "onChange",
+    defaultValues: {
+      withdrawAmount: undefined,
+    }
+  });
 
-  const handleAction = (
-    action: 'approve' | 'deposit' | 'withdraw',
-    setter: React.Dispatch<React.SetStateAction<boolean>>,
-    successStateSetter?: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    setter(true);
+  const handleApprove = () => {
+    setIsApproving(true);
     setTimeout(() => {
-      setter(false);
-      if (successStateSetter) {
-        successStateSetter(true);
-      }
+      setIsApproving(false);
+      setIsApproved(true);
       toast({
         title: `Transaction Successful`,
-        description: `Your ${action} of ${action === 'withdraw' ? withdrawAmount : depositAmount} ASSET was successful.`,
+        description: `Your approval was successful.`,
         variant: "default",
       });
-      if(action === 'deposit') setDepositAmount("");
-      if(action === 'withdraw') setWithdrawAmount("");
+    }, 2000);
+  }
+
+  const onDepositSubmit = (values: z.infer<typeof DepositSchema>) => {
+    setIsDepositing(true);
+    setTimeout(() => {
+      setIsDepositing(false);
+      toast({
+        title: `Transaction Successful`,
+        description: `Your deposit of ${values.depositAmount} ASSET was successful.`,
+        variant: "default",
+      });
+      depositForm.reset();
+      setIsApproved(false);
     }, 2000);
   };
-
+  
+  const onWithdrawSubmit = (values: z.infer<typeof WithdrawSchema>) => {
+    setIsWithdrawing(true);
+    setTimeout(() => {
+      setIsWithdrawing(false);
+      toast({
+        title: `Transaction Successful`,
+        description: `Your withdraw of ${values.withdrawAmount} ASSET was successful.`,
+        variant: "default",
+      });
+      withdrawForm.reset();
+    }, 2000);
+  };
 
   return (
     <GlassCard>
@@ -66,7 +118,7 @@ export function MainActions() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="deposit">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="deposit">
               <ArrowDownToLine className="mr-2 h-4 w-4" /> Deposit
@@ -75,63 +127,96 @@ export function MainActions() {
               <ArrowUpFromLine className="mr-2 h-4 w-4" /> Withdraw
             </TabsTrigger>
           </TabsList>
+
           <TabsContent value="deposit" className="mt-4 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-sm">
-                <label htmlFor="deposit-amount">Amount</label>
-                <span className="text-muted-foreground">Balance: {walletBalance.toFixed(2)} ASSET</span>
-              </div>
-              <div className="flex gap-2">
-                <Input
-                  id="deposit-amount"
-                  placeholder="0.0"
-                  value={depositAmount}
-                  onChange={(e) => setDepositAmount(e.target.value)}
+            <Form {...depositForm}>
+              <form onSubmit={depositForm.handleSubmit(onDepositSubmit)} className="space-y-4">
+                <FormField
+                  control={depositForm.control}
+                  name="depositAmount"
+                  render={({ field }) => (
+                    <FormItem>
+                       <div className="flex justify-between items-center text-sm">
+                        <FormLabel>Amount</FormLabel>
+                        <span className="text-muted-foreground">Balance: {walletBalance.toFixed(2)} ASSET</span>
+                      </div>
+                      <FormControl>
+                        <div className="flex gap-2">
+                          <Input
+                            id="deposit-amount"
+                            placeholder="0.0"
+                            type="number"
+                            step="any"
+                            {...field}
+                             onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.value)}
+                          />
+                          <Button type="button" variant="outline" onClick={() => depositForm.setValue("depositAmount", walletBalance, { shouldValidate: true })}>Max</Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Button variant="outline" onClick={() => setDepositAmount(walletBalance.toString())}>Max</Button>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Button
-                disabled={isApproving || isApproved}
-                onClick={() => handleAction('approve', setIsApproving, setIsApproved)}
-              >
-                {isApproving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isApproved ? 'Approved' : '1. Approve'}
-              </Button>
-              <Button
-                disabled={!isApproved || isDepositing || !depositAmount}
-                onClick={() => handleAction('deposit', setIsDepositing)}
-              >
-                {isDepositing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                2. Deposit
-              </Button>
-            </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <Button
+                    type="button"
+                    disabled={isApproving || isApproved || !depositForm.formState.isValid}
+                    onClick={handleApprove}
+                  >
+                    {isApproving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isApproved ? 'Approved' : '1. Approve'}
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={!isApproved || isDepositing || !depositForm.formState.isValid}
+                  >
+                    {isDepositing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    2. Deposit
+                  </Button>
+                </div>
+              </form>
+            </Form>
           </TabsContent>
+
           <TabsContent value="withdraw" className="mt-4 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between items-center text-sm">
-                <label htmlFor="withdraw-amount">Amount</label>
-                <span className="text-muted-foreground">Deposited: {depositedBalance.toFixed(2)} ASSET</span>
-              </div>
-              <div className="flex gap-2">
-                <Input
-                  id="withdraw-amount"
-                  placeholder="0.0"
-                  value={withdrawAmount}
-                  onChange={(e) => setWithdrawAmount(e.target.value)}
+            <Form {...withdrawForm}>
+              <form onSubmit={withdrawForm.handleSubmit(onWithdrawSubmit)} className="space-y-4">
+                 <FormField
+                  control={withdrawForm.control}
+                  name="withdrawAmount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex justify-between items-center text-sm">
+                        <FormLabel>Amount</FormLabel>
+                        <span className="text-muted-foreground">Deposited: {depositedBalance.toFixed(2)} ASSET</span>
+                      </div>
+                      <FormControl>
+                        <div className="flex gap-2">
+                           <Input
+                            id="withdraw-amount"
+                            placeholder="0.0"
+                            type="number"
+                            step="any"
+                            {...field}
+                            onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.value)}
+                          />
+                          <Button type="button" variant="outline" onClick={() => withdrawForm.setValue("withdrawAmount", depositedBalance, { shouldValidate: true })}>Max</Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Button variant="outline" onClick={() => setWithdrawAmount(depositedBalance.toString())}>Max</Button>
-              </div>
-            </div>
-            <Button
-              className="w-full"
-              disabled={isWithdrawing || !withdrawAmount}
-              onClick={() => handleAction('withdraw', setIsWithdrawing)}
-            >
-              {isWithdrawing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Withdraw
-            </Button>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isWithdrawing || !withdrawForm.formState.isValid}
+                >
+                  {isWithdrawing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Withdraw
+                </Button>
+              </form>
+            </Form>
           </TabsContent>
         </Tabs>
       </CardContent>
