@@ -30,7 +30,7 @@ npx hardhat run scripts/deploy.js --network sepolia
 6. Configure vault
 Edit .env with your strategy addresses and treasury wallet.
 
-Link to the live project: https://restake-to-grow.vercel.app/
+Link to the live project: https://restake-to-grow-pink.vercel.app/
 
 Features
 •	Automated Yield Routing — split staking returns between treasury & GrowthPool
